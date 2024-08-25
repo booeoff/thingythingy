@@ -1,0 +1,42 @@
+(function(Scratch) {
+  'use strict';
+
+  // BASIC interpreter initialization
+  function runBASIC(code) {
+    try {
+      const interpreter = new BASICInterpreter();
+      interpreter.run(code);
+      return interpreter.output;
+    } catch (error) {
+      return `Error: ${error.message}`;
+    }
+  }
+
+  class BASICExtension {
+    getInfo() {
+      return {
+        id: 'basicRunner',
+        name: 'BASIC Runner',
+        blocks: [
+          {
+            opcode: 'runBASIC',
+            blockType: Scratch.BlockType.REPORTER,
+            text: 'run BASIC code [code]',
+            arguments: {
+              code: {
+                type: Scratch.ArgumentType.STRING,
+                defaultValue: 'PRINT "Hello, World!"'
+              }
+            }
+          }
+        ]
+      };
+    }
+
+    runBASIC(args) {
+      return runBASIC(args.code);
+    }
+  }
+
+  Scratch.extensions.register(new BASICExtension());
+})(Scratch);
